@@ -61,10 +61,12 @@ def main():
     bitwise_s2s3 = bitwiseXOR(s2,s3)
     bitwise_s2s4 = bitwiseXOR(s2,s4)
     bitwise_s3s4 = bitwiseXOR(s3,s4)
+    bitwise_all = bitwiseXOR(bitwise_s2s3, s4)
 
     s2s3Out = ConvertBinaryToHex(bitwise_s2s3)
     s2s4Out = ConvertBinaryToHex(bitwise_s2s4)
     s3s4Out = ConvertBinaryToHex(bitwise_s3s4)
+    allout = ConvertBinaryToHex(bitwise_all)
     # XOR everything.
 
 
@@ -87,21 +89,25 @@ def main():
     sys.stdout.write('\n--------------------------Bitwise XOR Onion3 and Onion 4----------------------------\n')
     sys.stdout.write('Hex : ' + s3s4Out + '\n')
     sys.stdout.write('Bin : ' + bitwise_s3s4 + '\n')  
-    crib_drag()
+    crib_drag(s2s3Out)
+    crib_drag(s3s4Out)
+    crib_drag(s2s4Out)
+    crib_drag(allout)
 
-def crib_drag():
+def crib_drag(string):
     f = open(sys.argv[1], 'r')
     for line in f:
         sys.stdout.write('\n------------' + line + '--------------\n')
         crib = ''.join(hex(ord(x))[2:] for x in line)
         crib = ConvertToBinary(crib)
-        string = 'E35C1F6ECFE43756D34C7D7A7400C1FA98586BFAF9C713120D378C28B32B722DCC4995BA165766CA9C1E55ADF52EA18EFA23B7F55512E94096D0D96F96E034182556BB9E9587EBB91DD12FC920ECB2A7780569907FA87DC1A1237BDA57D3430A398E48FD761A910252AB6F231957D0F8BD61360BA6025C7E6E0930A98C183792EA97F3D70FC39F9C716977AD3C7C6C656F7CC76A0D66BA2C2E20B4098E11B9720EECB6B233D6D600B6B670A173359D0A9F48F7E972213C5B7D13866AD14050763042629D0551D6E2C1C71F5CA1939AD8ADDD46CB925CFE381F182D6F6EA0175819B1BE323E287416E4F473849DBEFBE62B39DBA40F65D1ECE3CF1F718C7BA2C4'
-        string = ConvertToBinary(string)
-        n = string
+        #string = 'E35C1F6ECFE43756D34C7D7A7400C1FA98586BFAF9C713120D378C28B32B722DCC4995BA165766CA9C1E55ADF52EA18EFA23B7F55512E94096D0D96F96E034182556BB9E9587EBB91DD12FC920ECB2A7780569907FA87DC1A1237BDA57D3430A398E48FD761A910252AB6F231957D0F8BD61360BA6025C7E6E0930A98C183792EA97F3D70FC39F9C716977AD3C7C6C656F7CC76A0D66BA2C2E20B4098E11B9720EECB6B233D6D600B6B670A173359D0A9F48F7E972213C5B7D13866AD14050763042629D0551D6E2C1C71F5CA1939AD8ADDD46CB925CFE381F182D6F6EA0175819B1BE323E287416E4F473849DBEFBE62B39DBA40F65D1ECE3CF1F718C7BA2C4'
+        sys.stdout.write(string)
+        n = ConvertToBinary(string)
         while len(n) >= len(crib):
             xor = bitwiseXOR(crib, n)
             sys.stdout.write(str(len(n)) + ':' + ConvertToAscii(xor) + '\n')
             n= n[1:]
+    f.close()
 
     
 main()
