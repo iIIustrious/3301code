@@ -2,7 +2,7 @@ from binascii import unhexlify, hexlify
 import sys
 
 """
-Written by Onecool, Surtri and (some) iIIustrious
+Written by onecool, Surtri and iIIustrious
 """
 
 hexadecimal = {' ' : "Spacebar", '0' : "0000", '1' : "0001", '2' : "0010", '3' : "0011", '4' : "0100", '5' : "0101", '6' : "0110", '7' : "0111", '8' : "1000", '9' : "1001", 'a' : "1010", 'b' : "1011", 'c' : "1100", 'd' : "1101", 'e' : "1110", 'f' : "1111", 'A' : "1010", 'B' : "1011", 'C' : "1100", 'D' : "1101", 'E' : "1110", 'F' : "1111"}
@@ -99,14 +99,14 @@ def crib_drag(string):
     for line in f:
         sys.stdout.write('\n------------' + line + '--------------\n')
         crib = ''.join(hex(ord(x))[2:] for x in line)
-        crib = ConvertToBinary(crib)
+        Bincrib = ConvertToBinary(crib)
         #string = 'E35C1F6ECFE43756D34C7D7A7400C1FA98586BFAF9C713120D378C28B32B722DCC4995BA165766CA9C1E55ADF52EA18EFA23B7F55512E94096D0D96F96E034182556BB9E9587EBB91DD12FC920ECB2A7780569907FA87DC1A1237BDA57D3430A398E48FD761A910252AB6F231957D0F8BD61360BA6025C7E6E0930A98C183792EA97F3D70FC39F9C716977AD3C7C6C656F7CC76A0D66BA2C2E20B4098E11B9720EECB6B233D6D600B6B670A173359D0A9F48F7E972213C5B7D13866AD14050763042629D0551D6E2C1C71F5CA1939AD8ADDD46CB925CFE381F182D6F6EA0175819B1BE323E287416E4F473849DBEFBE62B39DBA40F65D1ECE3CF1F718C7BA2C4'
         sys.stdout.write(string)
-        n = ConvertToBinary(string)
-        while len(n) >= len(crib):
-            xor = bitwiseXOR(crib, n)
-            sys.stdout.write(str(len(n)) + ':' + ConvertToAscii(xor) + '\n')
-            n= n[1:]
+        BinString = ConvertToBinary(string)
+        while len(BinString) >= len(Bincrib):
+            xor = bitwiseXOR(Bincrib, BinString)
+            sys.stdout.write(str(len(BinString)) + ':' + ConvertToAscii(xor) + '\n')
+            BinString= BinString[1:]
     f.close()
 
     
