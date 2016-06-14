@@ -1,0 +1,16 @@
+#!/bin/bash
+while true
+ do
+curl --socks4a localhost:9050 "http://avowyfgl5lkzfj3n.onion" > coordOut
+if diff Coords coordOut > differences ; then
+  sleep 50s
+else
+  $var = $?
+  cat differences | mailx -s "onion changed" noxpopuli3301@gmail.com
+  cat coordOut > Coords;
+  python ircbot.py
+  sleep 50s
+fi
+
+done
+
