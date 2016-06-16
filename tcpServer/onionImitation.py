@@ -64,7 +64,10 @@ def handler(clientsock,addr):
             elif any( t == clientIn[0] for t in ("hello" , "hi")) : clientsock.send(hello)
             elif any( t == clientIn[0] for t in ("hint", "clue"))  : clientsock.send(hint)
             elif clientIn[0] == "primes" : clientsock.send(primes)
-            elif clientIn[0] == "count" : clientsock.send(count("".join(ch for ch in clientIn[1].strip() if ch in (ascii_letters)) ))
+            elif clientIn[0] == "count" :
+                c = "".join(ch for ch in clientIn[1].strip() if ch in (ascii_letters))
+                if not c == "" : clientsock.send(count(c))
+                else : clientsock.send(error())
             elif clientIn[0].isdigit() : clientsock.send(factor(clientIn[0].strip()))
             else :
                 if "get" == clientIn[0] :
@@ -125,9 +128,9 @@ def count(msg):
         print letter
         num += int(values.get(letter))
     prime = ""
-    if isprime(num) :
+    if len(factors(num)) == 2 :
         prime = "*"
-        if isprime(str(num)[::-1]) : prime = "+"
+        if len(factors(int( str(num)[::-1]) )) == 2 : prime = "+"
     return (str(num) + prime + "\n")
 
 def factor(num):
@@ -144,25 +147,7 @@ def factor(num):
 def factors(n):
         step = 2 if n%2 else 1
         return set(reduce(list.__add__, ([i, n//i] for i in range(1, int(sqrt(n))+1, step) if n % i == 0)))
-def isprime(n):
-    '''check if integer n is a prime'''
-    # make sure n is a positive integer
-    n = abs(int(n))
-    # 0 and 1 are not primes
-    if n < 2:
-        return False
-    # 2 is the only even prime number
-    if n == 2: 
-        return True    
-    # all other even numbers are not primes
-    if not n & 1: 
-        return False
-    # range starts with 3 and only needs to go up the squareroot of n
-    # for all odd numbers
-    for x in range(3, int(n**0.5)+1, 2):
-        if n % x == 0:
-            return False
-    return True
+
 def error():
     msg = ["Not a webserver\r\n", "The command you typed\nDoes not seem to exist\nBut countless more do\r\n", "command not found\r\n", "Not a typewriter\r\n"]
     return random.choice(msg)
