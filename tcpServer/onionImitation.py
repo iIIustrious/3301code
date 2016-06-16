@@ -60,7 +60,7 @@ def handler(clientsock,addr):
         clientIn = data.lower().split(None, 1)
         if clientIn : 
             print repr(addr) + ' recv:' +' '.join(clientIn)
-            if any(t == clientIn[0] for t in ("goodbye", "bye" , "exit" , "quit")) : clientsock.send("99 GOODBYE\r\n"); break 
+            if any(t == clientIn[0] for t in ("goodbye", "bye" , "exit" , "quit")) : clientsock.send("goodbye\r\n"); break 
             elif any( t == clientIn[0] for t in ("hello" , "hi")) : clientsock.send(hello)
             elif any( t == clientIn[0] for t in ("hint", "clue"))  : clientsock.send(hint)
             elif clientIn[0] == "primes" : clientsock.send(primes)
@@ -71,7 +71,7 @@ def handler(clientsock,addr):
             elif clientIn[0].isdigit() : clientsock.send(factor(clientIn[0].strip()))
             else :
                 if "get" == clientIn[0] :
-                    if len(clientIn) < 2 : break
+                    if "http" in clientIn[1] : break
                     elif any(t == str(clientIn[1]).strip() for t in ("3301" , "1033")) : clientsock.send(hello); print "recognized"
                     elif str(clientIn[1]).strip() == "hint" : clientsock.send(hint)
                     else : clientsock.send(error())
