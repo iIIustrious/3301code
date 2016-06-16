@@ -1,5 +1,6 @@
 #Server Code
 from socket import *
+from string import ascii_letters
 import random
 from math import sqrt
 import thread
@@ -63,7 +64,7 @@ def handler(clientsock,addr):
             elif any( t == clientIn[0] for t in ("hello" , "hi")) : clientsock.send(hello)
             elif any( t == clientIn[0] for t in ("hint", "clue"))  : clientsock.send(hint)
             elif clientIn[0] == "primes" : clientsock.send(primes)
-            elif clientIn[0] == "count" : clientsock.send(count(clientIn[1].strip()))
+            elif clientIn[0] == "count" : clientsock.send(count("".join(ch for ch in clientIn[1].strip() if ch in (ascii_letters)) ))
             elif clientIn[0].isdigit() : clientsock.send(factor(clientIn[0].strip()))
             else :
                 if "get" == clientIn[0] :
@@ -79,6 +80,7 @@ def handler(clientsock,addr):
 def count(msg):
     values =    {'f': 2,
                 'u': 3,
+                'v': 3,
                 'T': 5, #// th
                 'o': 7,
                 'r': 11,
@@ -110,14 +112,14 @@ def count(msg):
                 'X': 109, #// ea
                 ' ': 0
                 }
-    msg.replace("th", "T")
-    msg.replace( "eo", "E")
-    msg.replace( "ing", "G")
-    msg.replace( "ng", "G")
-    msg.replace( "oe", "O")
-    msg.replace( "ae", "A")
-    msg.replace( "ia", "I")
-    msg.replace( "ea", "X")
+    msg = msg.replace("th", "T")
+    msg = msg.replace( "eo", "E")
+    msg = msg.replace( "ing", "G")
+    msg = msg.replace( "ng", "G")
+    msg = msg.replace( "oe", "O")
+    msg = msg.replace( "ae", "A")
+    msg = msg.replace( "ia", "I")
+    msg = msg.replace( "ea", "X")
     num = 0
     for letter in msg:
         print letter
