@@ -58,19 +58,20 @@ def handler(clientsock,addr):
         if not data:	break
         clientIn = data.lower().split(None, 1)
         if clientIn : 
-            print repr(addr) + ' recv:' + repr(clientIn[0]) + " " + repr(clientIn[1])
-            if "get" == clientIn[0] :
-                if len(clientIn) == 1 : break
-                elif any(t == clientIn[1] for t in ("3301", "1033")) : clientsock.send(hello)
-                elif clientIn[1] == "hint" : clientsock.send(hint)
-                else : clientsock.send(error())
+            print repr(addr) + ' recv:' +' '.join(clientIn)
             if any(t == clientIn[0] for t in ("goodbye", "bye" , "exit" , "quit")) : clientsock.send("99 GOODBYE\r\n"); break 
             elif any( t == clientIn[0] for t in ("hello" , "hi")) : clientsock.send(hello)
             elif any( t == clientIn[0] for t in ("hint", "clue"))  : clientsock.send(hint)
             elif clientIn[0] == "primes" : clientsock.send(primes)
             elif clientIn[0] == "count" : clientsock.send(count(clientIn[1].strip()))
             elif clientIn[0].isdigit() : clientsock.send(factor(clientIn[0].strip()))
-            else : clientsock.send(error())
+            else :
+                if "get" == clientIn[0] :
+                    if len(clientIn) < 2 : break
+                    elif any(t == str(clientIn[1]).strip() for t in ("3301" , "1033")) : clientsock.send(hello); print "recognized"
+                    elif str(clientIn[1]).strip() == "hint" : clientsock.send(hint)
+                    else : clientsock.send(error())
+                else : clientsock.send(error())
     clientsock.close()
     print addr, "- closed connection"
 
@@ -107,18 +108,19 @@ def count(msg):
                 'y': 103,
                 'I': 107, #// ia, io
                 'X': 109, #// ea
+                ' ': 0
                 }
-    msg =  msg.replace("th", "T")
-    msg = msg.replace( "eo", "E")
-    msg = msg.replace( "ing", "G")
-    msg = msg.replace( "ng", "G")
-    msg = msg.replace( "oe", "O")
-    msg = msg.replace( "ae", "A")
-    msg = msg.replace( "ia", "I")
-    msg = msg.replace( "ea", "X")
+    msg.replace("th", "T")
+    msg.replace( "eo", "E")
+    msg.replace( "ing", "G")
+    msg.replace( "ng", "G")
+    msg.replace( "oe", "O")
+    msg.replace( "ae", "A")
+    msg.replace( "ia", "I")
+    msg.replace( "ea", "X")
     num = 0
-    msg = msg.replace(' ','')
     for letter in msg:
+        print letter
         num += int(values.get(letter))
     prime = ""
     if isprime(num) :
